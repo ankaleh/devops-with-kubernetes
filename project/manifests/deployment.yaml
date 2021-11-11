@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
         - name: kub-project
-          image: ankaleh/kub-project:v0.4
+          image: ankaleh/kub-project:v0.5
