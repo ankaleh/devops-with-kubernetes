@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kub-project-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kub-project
+  template:
+    metadata:
+      labels:
+        app: kub-project
+    spec:
+      containers:
+        - name: kub-project
+          image: ankaleh/kub-project:v0.4
