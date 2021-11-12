@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: writer-reader-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: writer-reader
+  template:
+    metadata:
+      labels:
+        app: writer-reader
+    spec:
+      volumes:
+        - name: shared-hash
+          emptyDir: {}
+      containers:
+        - name: writer
+          image: ankaleh/writer:latest
+          volumeMounts:
+          - name: shared-hash
+            mountPath: /usr/src/app/files
+        - name: reader
+          image: ankaleh/reader:latest
+          volumeMounts:
+          - name: shared-hash
+            mountPath: /usr/src/app/files
