@@ -14,7 +14,8 @@ spec:
     spec:
       volumes:
         - name: shared-hash
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: wr-pong-claim
       containers:
         - name: writer
           image: ankaleh/writer:latest
@@ -22,7 +23,7 @@ spec:
           - name: shared-hash
             mountPath: /usr/src/app/files
         - name: reader
-          image: ankaleh/reader:latest
+          image: ankaleh/reader:v0.1
           volumeMounts:
           - name: shared-hash
             mountPath: /usr/src/app/files
