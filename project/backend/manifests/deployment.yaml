@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kub-project-dep
+  name: project-backend-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kub-project
+      app: project-backend
   template:
     metadata:
       labels:
-        app: kub-project
+        app: project-backend
     spec:
-      volumes:
+      volumes: 
         - name: image
           emptyDir: {}
       containers:
-        - name: kub-project
-          image: ankaleh/kub-project:v0.7.3
+        - name: project-backend
+          image: ankaleh/project-backend:v1.1
           volumeMounts:
           - name: image
             mountPath: /usr/src/app/files

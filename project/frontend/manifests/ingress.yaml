@@ -4,8 +4,7 @@ metadata:
   annotations: 
     kubernetes.io/ingress.class: "traefik"
     traefik.frontend.rule.type: PathPrefixStrip
-  name: writer-reader-ing
-  namespace: exercises
+  name: kub-project-ing
 spec:
   rules:
   - http:
@@ -14,14 +13,14 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: writer-reader-svc
+            name: project-frontend-svc
             port:
-              number: 2345
-      - path: /pingpong
+              number: 3456
+      - path: /api
         pathType: Prefix
         backend:
           service:
-            name: ping-pong-svc
+            name: project-backend-svc
             port:
-              number: 2345
+              number: 3456
       

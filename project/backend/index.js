@@ -1,18 +1,35 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const path = require('path')
 const fs = require('fs')
 const axios = require('axios')
 
+const contextPath = '/api/'
+const router = express.Router()
+
 const pathToFolder = path.join('/', 'usr', 'src', 'app', 'files')
 const pathToFile = path.join(pathToFolder, 'image.jpg')
 
-app.set('views', './views')
-app.set('view engine', 'pug')
+const todos = [{ name: 'Siivoa!'}, { name: 'Pese pyykit!'}, { name: 'Lue tenttikirja loppuun!'}]
 
-const todos = ['Siivoa!', 'Pese pyykit!', 'Lue tenttikirja loppuun!']
+app.use(express.json())
+app.use(cors())
 
-const port = 3000
+router.get('/todos', (req, res) => {
+    res.json(todos)
+})
+
+router.post('/todos', async (req, res) => {
+    const todo = req.body
+    if (!req.body) {
+        return res.status(400).json({
+            error: 'Data puuttuu!'
+        })
+    }
+    todos.push(todo)
+    res.json(todos)
+})
 
 const createFolder = async () => {
     try {
@@ -46,15 +63,16 @@ const fetchNewPic = async () => {
     }
 }
 
-app.get('/', async (req, res) => {
+router.get('/image', async (req, res) => {
     await getPic()
-    res.render('index', { todos: todos, title: 'DevOps with Kubernetes' , message: 'Työlista' })
+    res.sendFile(pathToFile)
 })
-
-app.use('/static', express.static(pathToFolder))
 
 fetchNewPic()
 
-app.listen(port, () => {
-    console.log(`Server started in port ${port}`)
+app.use(contextPath, router)
+
+const PORT = 4000
+app.listen(PORT, () => {
+    console.log(`Server started in port ${PORT}`)
 })
