@@ -6,8 +6,10 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+ARG REACT_APP_BACKEND_URL='http://localhost:8081/api'
+
 RUN npm install && \
-        npm run build
+        REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL} npm run build
 
 FROM node:16-alpine
 COPY --from=builder /usr/src/app/build /build
