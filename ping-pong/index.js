@@ -6,11 +6,9 @@ const path = require('path')
 const fs = require('fs')
 
 const folderName = path.join('/', 'usr', 'src', 'app', 'files')
-const fileToWrite = path.join(folderName, 'pongs.txt')
+const pathToPongs = path.join(folderName, 'pongs.txt')
 
-let counter = 0
-
-const savePongs = () => {
+const savePongs = async (pongs) => {
     try {
         if (!fs.existsSync(folderName)) {
           fs.mkdirSync(folderName)
@@ -19,21 +17,29 @@ const savePongs = () => {
         console.error(err)
     }
     try {
-        fs.writeFileSync(fileToWrite, `${counter}`)
+        fs.writeFileSync(pathToPongs, `${pongs}`)
     } catch (err) {
         console.log(err)
     }
     
 }
 
-router.get('/', (req, res) => {
-    
-    counter += 1
-    res.send(`Pong ${counter}`)
-    savePongs()
+router.get('/', async (req, res) => {
+    let pongs = 0
+    try {
+        pongs = fs.readFileSync(pathToPongs, 'utf8')
+    } catch (err) {
+        console.error(err)
+        res.send('Pongs-tiedoston lukeminen ei onnistunut.')
+    }
+    res.send(`${pongs}`)
+    pongs = parseInt(pongs) + 1
+    savePongs(pongs)
 })
 
 app.use(contextPath, router)
+
+savePongs(0)
 
 const port = 8080
 app.listen(port, () => {

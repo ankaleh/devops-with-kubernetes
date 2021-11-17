@@ -13,12 +13,11 @@ spec:
         app: ping-pong
     spec:
       volumes:
-        - name: shared-hash
-          persistentVolumeClaim:
-            claimName: wr-pong-claim
+        - name: pongs
+          emptyDir: {}
       containers:
         - name: ping-pong
-          image: ankaleh/ping-pong:v0.3
+          image: ankaleh/ping-pong:v0.4
           volumeMounts:
-          - name: shared-hash
+          - name: pongs
             mountPath: /usr/src/app/files
