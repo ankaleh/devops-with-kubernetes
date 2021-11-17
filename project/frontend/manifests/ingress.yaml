@@ -5,6 +5,7 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
     traefik.frontend.rule.type: PathPrefixStrip
   name: kub-project-ing
+  namespace: kub-project
 spec:
   rules:
   - http:
