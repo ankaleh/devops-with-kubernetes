@@ -16,6 +16,9 @@ spec:
       volumes: 
         - name: shared-hash
           emptyDir: {}
+        - name: config
+          configMap:
+            name: reader-configmap
       containers:
         - name: writer
           image: ankaleh/writer:latest
@@ -23,7 +26,11 @@ spec:
           - name: shared-hash
             mountPath: /usr/src/app/files
         - name: reader
-          image: ankaleh/reader:v0.2.4
+          image: ankaleh/reader:v0.3.2
           volumeMounts:
           - name: shared-hash
             mountPath: /usr/src/app/files
+          - name: config
+            mountPath: "/usr/src/app/config"
+            readOnly: true
+          
