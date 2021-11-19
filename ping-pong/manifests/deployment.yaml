@@ -18,7 +18,18 @@ spec:
           emptyDir: {}
       containers:
         - name: ping-pong
-          image: ankaleh/ping-pong:v0.4
+          image: ankaleh/ping-pong:v1.6
+          env:
+            - name: USER # ENV name passed to container
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: USER # ENV name in the secret
+            - name: PASSWORD # ENV name passed to container
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: PASSWORD # ENV name in the secret
           volumeMounts:
           - name: pongs
             mountPath: /usr/src/app/files
